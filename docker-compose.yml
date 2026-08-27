@@ -1,0 +1,35 @@
+# One service. No n8n, no tunnel, no webhook, no public URL: the container long-polls
+# Telegram outbound, so it works behind NAT on a laptop exactly as it does on a server.
+#
+#   ./setup.sh        writes .env
+#   docker compose up -d
+#
+# Pinned so the project name comes from here rather than the directory name. Without it,
+# Compose derives it from the folder ("CaseMentor" -> "casementor") and stamps that onto
+# every volume and network it creates.
+name: case-mentor
+
+services:
+  agent:
+    build:
+      context: .
+      dockerfile: agent-service/Dockerfile
+    image: case-mentor-agent
+    container_name: case-mentor-agent
+    env_file: .env
+    restart: unless-stopped
+    volumes:
+      # Claude CLI home: session transcripts and .claude.json. Must be a volume, not a
+      # single-file bind — the CLI rewrites .claude.json by rename, and Docker binds a
+      # single file by inode, so a bind silently detaches and session resume dies.
+      - case-mentor-home:/home/agent
+      # Session workdirs, uploaded PDFs, cropped exhibits, state.json.
+      - case-mentor-data:/var/lib/case-mentor
+    # Loopback only. Nothing needs to reach this from outside; Telegram is contacted
+    # outbound. Exposed at all only so you can curl /health.
+    ports:
+      - "127.0.0.1:8080:8080"
+
+volumes:
+  case-mentor-home:
+  case-mentor-data:

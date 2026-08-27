@@ -1,0 +1,38 @@
+# ---------------------------------------------------------------- secrets
+# .env holds the Anthropic key, the Telegram bot token, and the Notion token.
+# The installer generates it; it must never be committed.
+.env
+*.env
+!*.env.example
+
+# ---------------------------------------------------------------- operator notes
+# Written for one machine and one operator, not for people installing this.
+# The README is the public equivalent.
+PROJECT_CONTEXT.md
+RUNBOOK.md
+DEPLOY.md
+
+# ---------------------------------------------------------------- n8n-era artifacts
+# Superseded when the stack collapses to a single service. Kept locally until the
+# rebuild lands so the current deployment stays runnable.
+n8n-case-mentor-workflow.json
+archive/
+REBUILD_AGENT.sh
+RESTART_N8N.sh
+
+# ---------------------------------------------------------------- test transcripts
+# Real interview runs against RocketBlocks cases; they quote the casebook material
+# verbatim. Public tests need synthetic fixtures instead.
+tests/
+
+# ---------------------------------------------------------------- build artifacts
+# The skill ships as a reviewable folder. The .skill zip is built from it.
+*.skill
+
+# ---------------------------------------------------------------- local tooling / OS
+.claude/settings.local.json
+.DS_Store
+__pycache__/
+*.py[cod]
+.venv/
+venv/

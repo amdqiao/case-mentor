@@ -1,0 +1,14 @@
+# The build context is the repo root. Keep secrets and local state out of it.
+.env
+*.env
+!.env.example
+.git
+.claude
+tests
+archive
+*.skill
+*.md
+!skill/**/*.md
+__pycache__
+*.py[cod]
+.DS_Store
